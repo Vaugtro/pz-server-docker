@@ -14,7 +14,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-mkdir -p /app
+RUN mkdir -p /app
 
 # Create a non-root user
 RUN useradd -m -s /bin/bash zomboiduser
