@@ -14,7 +14,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-USER root
+# Install the latest version of Project Zomboid Server from Steam
+RUN steamcmd +force_install_dir /app +login anonymous +app_update ${STEAMAPPID} validate +quit
 
 # Create the app directory and set the owner to the non-root user
 WORKDIR /app
@@ -22,9 +23,6 @@ RUN useradd -m -s /bin/bash zomboiduser && chown -R zomboiduser:zomboiduser /app
 
 # Switch to the new user
 USER ${USER}
-
-# Install the latest version of Project Zomboid Server from Steam
-RUN steamcmd +force_install_dir /app +login anonymous +app_update ${STEAMAPPID} validate +quit
 
 # Copy the entrypoint script and ensure it has execute permissions
 COPY --chown=zomboiduser:zomboiduser ./scripts /app/scripts
