@@ -13,6 +13,6 @@ services:
       - "27015:27015/tcp"
     volumes:
       # Server data
-      - ./data:/app/Server
+      - ./data:/app
       # Workshop mods folder
       - ./workshop-mods:/app/steamapps/workshop
