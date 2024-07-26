@@ -17,18 +17,13 @@ RUN apt-get update \
 # Create a non-root user
 RUN useradd -m -s /bin/bash zomboiduser
 
-# Create a directory for the server
-RUN mkdir -p /app \
-    && chown -R zomboiduser:zomboiduser /app
-
-# Set the home directory for zomboiduser to /app
-ENV HOME=/app
-
 # Switch to the new user
 USER ${USER}
 
 # Install the latest version of Project Zomboid Server from Steam
 RUN steamcmd +force_install_dir /app +login anonymous +app_update ${STEAMAPPID} validate +quit
+
+RUN chown -R zomboiduser:zomboiduser /app
 
 WORKDIR /app
 
