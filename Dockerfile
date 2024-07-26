@@ -1,6 +1,7 @@
 FROM steamcmd/steamcmd:ubuntu-24
 
 ENV STEAMAPPID=380870
+ENV USER=zomboiduser
 ENV TZ=America/Sao_Paulo
 
 # Set the timezone to America/Sao_Paulo
@@ -24,7 +25,7 @@ RUN mkdir -p /app \
 ENV HOME=/app
 
 # Switch to the new user
-USER zomboiduser
+USER ${USER}
 
 # Install the latest version of Project Zomboid Server from Steam
 RUN steamcmd +force_install_dir /app +login anonymous +app_update ${STEAMAPPID} validate +quit
