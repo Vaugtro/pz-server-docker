@@ -16,12 +16,8 @@ RUN apt-get update \
 
 USER root
 
-# Create the app directory
-RUN mkdir -p /app
-
-# Create a non-root user
-RUN useradd -m -s /bin/bash zomboiduser
-RUN chown -R zomboiduser:zomboiduser /app
+# Create the app directory and set the owner to the non-root user
+RUN mkdir -p /app && useradd -m -s /bin/bash zomboiduser && chown -R zomboiduser:zomboiduser /app
 
 # Switch to the new user
 USER ${USER}
