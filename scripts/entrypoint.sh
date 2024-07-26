@@ -89,16 +89,16 @@ if [ -n "${SERVERPRESET}" ]; then
     echo "*** ERROR: the preset ${SERVERPRESET} doesn't exists. Please fix the configuration before start the server ***"
     exit 1
   # If SandboxVars files doesn't exists or replace is true, copy the file
-  elif [ ! -f "/home/${USER}/Server/${SERVERNAME}_SandboxVars.lua" ] || [ "${SERVERPRESETREPLACE,,}" == "true" ]; then
+  elif [ ! -f "/home/${USER}/Zomboid/Server/${SERVERNAME}_SandboxVars.lua" ] || [ "${SERVERPRESETREPLACE,,}" == "true" ]; then
     echo "*** INFO: New server will be created using the preset ${SERVERPRESET} ***"
-    echo "*** Copying preset file from /app/media/lua/shared/Sandbox/${SERVERPRESET}.lua\" to \"/home/${USER}/Server/${SERVERNAME}_SandboxVars.lua\" ***"
-    mkdir -p "/home/${USER}/Server/"
-    cp -nf "/app/media/lua/shared/Sandbox/${SERVERPRESET}.lua" "/home/${USER}/Server/${SERVERNAME}_SandboxVars.lua"
-    sed -i "1s/return.*/SandboxVars = \{/" "/home/${USER}/Server/${SERVERNAME}_SandboxVars.lua"
+    echo "*** Copying preset file from /app/media/lua/shared/Sandbox/${SERVERPRESET}.lua\" to \"/home/${USER}/Zomboid/Server/${SERVERNAME}_SandboxVars.lua\" ***"
+    mkdir -p "/home/${USER}/Zomboid/Server/"
+    cp -nf "/app/media/lua/shared/Sandbox/${SERVERPRESET}.lua" "/home/${USER}/Zomboid/Server/${SERVERNAME}_SandboxVars.lua"
+    sed -i "1s/return.*/SandboxVars = \{/" "/home/${USER}/Zomboid/Server/${SERVERNAME}_SandboxVars.lua"
     # Remove carriage return
-    dos2unix "/home/${USER}/Server/${SERVERNAME}_SandboxVars.lua"
+    dos2unix "/home/${USER}/Zomboid/Server/${SERVERNAME}_SandboxVars.lua"
     # I have seen that the file is created in execution mode (755). Change the file mode for security reasons.
-    chmod 644 "/home/${USER}/Server/${SERVERNAME}_SandboxVars.lua"
+    chmod 644 "/home/${USER}/Zomboid/Server/${SERVERNAME}_SandboxVars.lua"
   fi
 fi
 
@@ -129,17 +129,17 @@ if [ -n "${STEAMPORT2}" ]; then
 fi
 
 if [ -n "${PASSWORD}" ]; then
-	sed -i "s/Password=.*/Password=${PASSWORD}/" "/home/${USER}/Server/${SERVERNAME}.ini"
+	sed -i "s/Password=.*/Password=${PASSWORD}/" "/home/${USER}/Zomboid/Server/${SERVERNAME}.ini"
 fi
 
 if [ -n "${MOD_IDS}" ]; then
  	echo "*** INFO: Found Mods including ${MOD_IDS} ***"
-	sed -i "s/Mods=.*/Mods=${MOD_IDS}/" "/home/${USER}/Server/${SERVERNAME}.ini"
+	sed -i "s/Mods=.*/Mods=${MOD_IDS}/" "/home/${USER}/Zomboid/Server/${SERVERNAME}.ini"
 fi
 
 if [ -n "${WORKSHOP_IDS}" ]; then
  	echo "*** INFO: Found Workshop IDs including ${WORKSHOP_IDS} ***"
-	sed -i "s/WorkshopItems=.*/WorkshopItems=${WORKSHOP_IDS}/" "/home/${USER}/Server/${SERVERNAME}.ini"
+	sed -i "s/WorkshopItems=.*/WorkshopItems=${WORKSHOP_IDS}/" "/home/${USER}/Zomboid/Server/${SERVERNAME}.ini"
 	
 fi
 
@@ -155,17 +155,17 @@ if [ -e "/app/steamapps/workshop/content/108600" ]; then
 
   if [ -n "${map_list}" ]; then
     echo "*** INFO: Added maps including ${map_list} ***"
-    sed -i "s/Map=.*/Map=${map_list}Muldraugh, KY/" "/home/${USER}/Server/${SERVERNAME}.ini"
+    sed -i "s/Map=.*/Map=${map_list}Muldraugh, KY/" "/home/${USER}/Zomboid/Server/${SERVERNAME}.ini"
 
     # Checks which added maps have spawnpoints.lua files and adds them to the spawnregions file if they aren't already added
     IFS=";" read -ra strings <<< "$map_list"
     for string in "${strings[@]}"; do
-        if ! grep -q "$string" "/home/${USER}/Server/${SERVERNAME}_spawnregions.lua"; then
+        if ! grep -q "$string" "/home/${USER}/Zomboid/Server/${SERVERNAME}_spawnregions.lua"; then
           if [ -e "/app/media/maps/$string/spawnpoints.lua" ]; then
             result="{ name = \"$string\", file = \"media/maps/$string/spawnpoints.lua\" },"
             sed -i "/function SpawnRegions()/,/return {/ {    /return {/ a\
             \\\t\t$result
-            }" "/home/${USER}/Server/${SERVERNAME}_spawnregions.lua"
+            }" "/home/${USER}/Zomboid/Server/${SERVERNAME}_spawnregions.lua"
           fi
         fi
     done
