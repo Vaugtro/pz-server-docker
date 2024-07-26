@@ -14,11 +14,13 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+USER root
+
+# Create the app directory
 RUN mkdir -p /app
 
 # Create a non-root user
 RUN useradd -m -s /bin/bash zomboiduser
-
 RUN chown -R zomboiduser:zomboiduser /app
 
 # Switch to the new user
