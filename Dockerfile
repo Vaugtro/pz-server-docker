@@ -19,13 +19,13 @@ RUN mkdir -p /app
 # Create a non-root user
 RUN useradd -m -s /bin/bash zomboiduser
 
+RUN chown -R zomboiduser:zomboiduser /app
+
 # Switch to the new user
 USER ${USER}
 
 # Install the latest version of Project Zomboid Server from Steam
 RUN steamcmd +force_install_dir /app +login anonymous +app_update ${STEAMAPPID} validate +quit
-
-RUN chown -R zomboiduser:zomboiduser /app
 
 WORKDIR /app
 
